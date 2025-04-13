@@ -56,12 +56,11 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip -d my-static-website
+        run: unzip release.zip -d ./
       - name: Move contents to wwwroot
         run: |
           ls -ltr my-static-website
-          ls -ltr my-static-website/
-          mv my-static-website/wwwroot/ ./
+          mv my-static-website/ wwwroot
           rm -rf my-static-website/
           ls -ltr wwwroot
         #rm -rf my-static-website
