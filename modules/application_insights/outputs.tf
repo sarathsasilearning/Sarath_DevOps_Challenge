@@ -7,3 +7,7 @@ output "app_insights_instrumentation_key" {
   description = "The instrumentation key of the Application Insights resource."
   value       = azurerm_application_insights.app_insights.instrumentation_key
 }
+output "connection_string" {
+  description = "The connection string of the Application Insights resource."
+  value       = azurerm_application_insights.app_insights.connection_string
+}

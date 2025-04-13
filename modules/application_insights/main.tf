@@ -5,4 +5,5 @@ resource "azurerm_application_insights" "app_insights" {
   application_type    = "web"
   workspace_id        = var.workspace_id
   tags = var.tags
+  
 }

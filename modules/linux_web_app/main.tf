@@ -17,7 +17,13 @@ resource "azurerm_linux_web_app" "this" {
     ftps_state = "FtpsOnly"
     # Specify the Node.js stack
     application_stack {
-      node_version = "22-lts"
+      node_version = "20-lts"
+    }
+    ip_restriction_default_action = "Deny"
+    ip_restriction {
+      description = "frontdoor"
+      priority    = 100
+      service_tag = "AzureFrontDoor.Backend"
     }
   }
 
