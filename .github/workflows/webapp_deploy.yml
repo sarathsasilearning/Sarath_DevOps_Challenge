@@ -21,15 +21,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.1.0 # Ex: v4.1.0, See the latest version at https://github.com/marketplace/actions/official-sonarqube-scan
+        uses: SonarSource/sonarqube-scan-action@v5.1.0
         env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-         SONAR_HOST_URL: 'https://sonarcloud.io'
-         SONAR_PROJECT_KEY: 'sarathsasilearning_Sarath_DevOps_Challenge'
-         SONAR_ORGANIZATION: 'srathsasilearning'
-         args: >
-            -Dsonar.organization='sarathsasilearning' # For SonarQube Cloud only
-            -Dsonar.projectKey='sarathsasilearning_Sarath_DevOps_Challenge'
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: 'https://sonarcloud.io'
+        with:
+          args: >
+            -Dsonar.organization=sarathsasilearning
+            -Dsonar.projectKey=sarathsasilearning_Sarath_DevOps_Challenge
+            -Dsonar.sources=.
         
    
     #   - name: Set up JDK 17
