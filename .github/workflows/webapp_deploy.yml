@@ -56,15 +56,16 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip -d my-static-website
+        run: unzip release.zip -d wwwroot
       - name: Move contents to wwwroot
         run: |
-          mkdir -p wwwroot
-          rm -rf wwwroot
-          mv my-static-website wwwroot
           ls -ltr
           ls -ltr wwwroot
-          rm -rf my-static-website
+        #rm -rf my-static-website
+        #   mkdir -p wwwroot
+        #   rm -rf wwwroot
+        #   mv my-static-website wwwroot
+
       
       - name: Login to Azure
         uses: azure/login@v2
