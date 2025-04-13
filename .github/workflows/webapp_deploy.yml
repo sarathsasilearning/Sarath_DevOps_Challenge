@@ -57,6 +57,11 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip -d my-static-website
+      - name: Move contents to wwwroot
+        run: |
+          mkdir -p wwwroot
+          mv my-static-website/* wwwroot/
+          rm -rf my-static-website
       
       - name: Login to Azure
         uses: azure/login@v2
@@ -70,4 +75,4 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: '1-webapp-prod-fmc' # Update to your Dev environment app name
-          package: my-static-website
+          package: wwwroot
