@@ -25,11 +25,13 @@ jobs:
       
       - name: npm install, build, and test
         run: |
+          pwd
+          ls
           cd my-static-website
+          pwd
           npm install
           npm run build
           npm run test
-          pwd
           ls -ltR
           echo "Test results generated."
 
