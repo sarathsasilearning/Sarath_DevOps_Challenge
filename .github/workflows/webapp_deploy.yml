@@ -25,6 +25,8 @@ jobs:
         env:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
          SONAR_HOST_URL: 'https://sonarcloud.io'
+         SONAR_PROJECT_KEY: 'sarathsasilearning_Sarath_DevOps_Challenge'
+         SONAR_ORGANIZATION: 'srathsasilearning'
 
     #   - name: Set up JDK 17
     #     uses: actions/setup-java@v3
