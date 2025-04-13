@@ -32,6 +32,12 @@ jobs:
 
       - name: Zip artifact for deployment
         run: zip -r release.zip my-static-website/*
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: static-website/test-results/
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
