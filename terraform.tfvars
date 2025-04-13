@@ -11,12 +11,6 @@ workspace_name       = "my-log-analytics-workspace"
 os_type            = "Linux"   
 sku_name           = "S1" 
 
-# app_settings = {
-#   #PPLICATIONINSIGHTS_CONNECTION_STRING      = "InstrumentationKey=f7044331-cabc-4a88-91ff-6d297cadc1bd;IngestionEndpoint=https://canadacentral-1.in.applicationinsights.azure.com/;LiveEndpoint=https://canadacentral.livediagnostics.monitor.azure.com/;ApplicationId=9a52a977-9d29-465c-8cba-b0654c5c80ce"
-#   ApplicationInsightsAgent_EXTENSION_VERSION = "~3"
-#   XDT_MicrosoftApplicationInsights_Mode      = "default"
-# }
-
 arm_role_receivers = [
   {
     name                    = "Monitoring Contributor"
