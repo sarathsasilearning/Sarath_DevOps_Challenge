@@ -31,7 +31,7 @@ jobs:
           npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip static-website/*
+        run: zip -r release.zip my-static-website/*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -69,6 +69,6 @@ jobs:
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
-          app-name: 'webapp-dev-fmc' # Update to your Dev environment app name
+          app-name: '1-webapp-prod-fmc' # Update to your Dev environment app name
           slot-name: 'Development' # Update to your Dev environment slot name
-          package: static-website
+          package: my-static-website
