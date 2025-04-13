@@ -61,6 +61,8 @@ jobs:
         run: |
           mkdir -p wwwroot
           mv my-static-website/* wwwroot/
+          ls -ltr
+          ls -ltr wwwroot
           rm -rf my-static-website
       
       - name: Login to Azure
