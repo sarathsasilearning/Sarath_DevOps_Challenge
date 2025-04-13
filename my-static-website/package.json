@@ -5,12 +5,22 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "jest"
+    "test": "jest --reporters=default --reporters=jest-junit"
   },
   "dependencies": {
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "jest": "^27.0.0"
+    "jest": "^27.0.0",
+    "jest-junit": "^13.0.0"
+  },
+  "jest": {
+    "reporters": [
+      "default",
+      ["jest-junit", {
+        "outputDirectory": "./test-results",
+        "outputName": "test-results.xml"
+      }]
+    ]
   }
 }
