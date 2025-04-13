@@ -60,7 +60,7 @@ jobs:
       - name: Move contents to wwwroot
         run: |
           ls -ltr my-static-website
-          ls -ltr my-static-website/wwwroot/*
+          ls -ltr my-static-website/
           mv my-static-website/wwwroot/ ./
           rm -rf my-static-website/
           ls -ltr wwwroot
