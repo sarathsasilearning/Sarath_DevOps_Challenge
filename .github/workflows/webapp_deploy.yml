@@ -31,7 +31,7 @@ jobs:
           npm run test --if-present
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip wwwroot/*
+        run: zip -r release.zip my-static-website/*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -56,11 +56,14 @@ jobs:
           name: node-app
 
       - name: Unzip artifact for deployment
-        run: unzip release.zip -d wwwroot
+        run: unzip release.zip -d my-static-website
       - name: Move contents to wwwroot
         run: |
-          ls -ltr
-          ls -ltr wwwroot/*
+          ls -ltr my-static-website
+          ls -ltr my-static-website/wwwroot/*
+          mv my-static-website/wwwroot/ ./
+          rm -rf my-static-website/
+          ls -ltr wwwroot
         #rm -rf my-static-website
         #   mkdir -p wwwroot
         #   rm -rf wwwroot
