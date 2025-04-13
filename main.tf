@@ -1,15 +1,3 @@
-provider "azurerm" {
-  features {}
-  subscription_id = var.subscription_id
-}
-terraform {
-  required_providers {
-    azurerm = {
-      source = "hashicorp/azurerm"
-      version = "4.24.0"
-    }
-  }
-}
 
 # Resource Group Module
 module "resource_group" {
@@ -56,7 +44,7 @@ module "linux_web_app" {
   #pp_settings        = var.app_settings
   
   app_settings = {
-    APLICATIONINSIGHTS_CONNECTION_STRING      = module.application_insights.connection_string
+    APPLICATIONINSIGHTS_CONNECTION_STRING      = module.application_insights.connection_string
     ApplicationInsightsAgent_EXTENSION_VERSION = "~3"
     XDT_MicrosoftApplicationInsights_Mode      = "default"
 }
