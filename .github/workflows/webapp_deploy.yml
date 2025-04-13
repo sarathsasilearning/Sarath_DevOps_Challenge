@@ -17,6 +17,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Install SonarScanner
+        run: |
+          curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
+          unzip sonar-scanner.zip -d /opt/sonar-scanner
+          sudo ln -s /opt/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner
+
+      - name: Run SonarCloud analysis
+        run: sonar-scanner
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: 'https://sonarcloud.io'
+          SONAR_PROJECT_KEY: 'sarathsasilearning_Sarath_DevOps_Challenge'
+          SONAR_ORGANIZATION: 'srathsasilearning'
+          SONAR_QUALITYGATE_WAIT: 'true'
 
       - name: Set up Node.js version
         uses: actions/setup-node@v3
