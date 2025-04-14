@@ -5,7 +5,8 @@ on:
 
 jobs:
   sonarqube-scan:
-    environment: 'Dev'
+    environment: 
+      name: 'Dev'
     runs-on: ubuntu-latest
     permissions:
       contents: read
