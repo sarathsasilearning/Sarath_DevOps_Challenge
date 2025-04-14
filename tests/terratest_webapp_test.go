@@ -15,11 +15,11 @@ func TestAppServiceConfiguration(t *testing.T) {
 		TerraformDir: "../",
 	}
 
-	// Fetch outputs
-	resourceGroup := terraform.Output(t, terraformOptions, "resource_group_name")
-	appName := terraform.Output(t, terraformOptions, "web_app_name")
-	location := terraform.Output(t, terraformOptions, "resource_group_location")
-	hostname := terraform.Output(t, terraformOptions, "web_app_default_hostname")
+	// Fetch outputs safely using OutputRequired
+	resourceGroup := terraform.OutputRequired(t, terraformOptions, "resource_group_name")
+	appName := terraform.OutputRequired(t, terraformOptions, "web_app_name")
+	location := terraform.OutputRequired(t, terraformOptions, "resource_group_location")
+	hostname := terraform.OutputRequired(t, terraformOptions, "web_app_default_hostname")
 
 	// Validate App Name
 	assert.NotEmpty(t, appName, "App Name should not be empty")
