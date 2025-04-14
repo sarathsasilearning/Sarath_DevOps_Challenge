@@ -25,6 +25,7 @@ jobs:
   deploy-dev:
     needs: sonarqube-scan
     uses: ./.github/workflows/deploy.yml
+    secrets: inherit
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'
