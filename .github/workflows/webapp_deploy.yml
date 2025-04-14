@@ -27,7 +27,7 @@ jobs:
     needs: deploy-dev
     runs-on: ubuntu-latest
     environment:
-      name: 'staging'
+      name: 'Approval'
     steps:
       - name: Staging Approval Step
         run: echo "Staging deployment approved, proceeding to apply."
@@ -36,11 +36,21 @@ jobs:
     needs: approve-staging
     uses: ./.github/workflows/deploy.yml
     with:
-      environment: 'Staging'
-      app-name: '1-webapp-staging-fmc'
+      environment: 'Dev'
+      app-name: '1-webapp-dev-fmc'
 
   approve-prod:
     needs: deploy-staging
     runs-on: ubuntu-latest
     environment:
-      name: '
+      name: 'Approval '
+    steps:
+      - name: Prod Approval Step
+        run: echo "Production deployment approved, proceeding to apply."
+
+  deploy-prod:
+    needs: approve-prod
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: 'Dev'
+      app-name: '1-webapp-dev-fmc'
