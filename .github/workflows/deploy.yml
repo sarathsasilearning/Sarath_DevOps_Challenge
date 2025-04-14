@@ -33,9 +33,11 @@ jobs:
       - name: Move contents to wwwroot
         run: |
           ls -ltr
-          mkdir wwwroot
-          mv ./* wwwroot
-          ls -ltr wwwroot
+          cd ..
+          ls -ltr
+          # mkdir wwwroot
+          # mv ./* wwwroot
+          # ls -ltr wwwroot
 
       - name: Login to Azure
         uses: azure/login@v2
