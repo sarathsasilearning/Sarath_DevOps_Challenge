@@ -10,15 +10,15 @@ on:
 
 jobs:
   build:
-    uses: .github/workflows/workflow_templates/build-and-test.yml@main  # Corrected to use a relative path
+    uses: ./.github/workflows/build-and-test.yml
 
   sonarqube-scan:
     needs: build
-    uses: ./workflow_templates/sonarqube-scan.yml@main  # Corrected to use a relative path
+    uses: ./.github/workflows/sonarqube-scan.yml
 
   deploy-dev:
     needs: sonarqube-scan
-    uses: ./workflow_templates/deploy.yml  # Corrected to use a relative path
+    uses: ./.github/workflows/deploy.yml
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'
@@ -27,30 +27,20 @@ jobs:
     needs: deploy-dev
     runs-on: ubuntu-latest
     environment:
-      name: 'Approval'
+      name: 'staging'
     steps:
       - name: Staging Approval Step
         run: echo "Staging deployment approved, proceeding to apply."
 
   deploy-staging:
     needs: approve-staging
-    uses: ./workflow_templates/deploy.yml  # Corrected to use a relative path
+    uses: ./.github/workflows/deploy.yml
     with:
-      environment: 'Dev'
-      app-name: '1-webapp-dev-fmc'
+      environment: 'Staging'
+      app-name: '1-webapp-staging-fmc'
 
   approve-prod:
     needs: deploy-staging
     runs-on: ubuntu-latest
     environment:
-      name: 'Approval'
-    steps:
-      - name: Prod Approval Step
-        run: echo "Production deployment approved, proceeding to apply."
-
-  deploy-prod:
-    needs: approve-prod
-    uses: ./workflow_templates/deploy.yml  # Corrected to use a relative path
-    with:
-      environment: 'Dev'
-      app-name: '1-webapp-dev-fmc'
+      name: '
