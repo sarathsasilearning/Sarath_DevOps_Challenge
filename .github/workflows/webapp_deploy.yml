@@ -45,7 +45,7 @@ jobs:
     secrets: inherit
     with:
       environment: 'Dev'
-      app-name: '1-webapp-dev-fmc'
+      app-name: '1-webapp-prod-fmc'
 
   approve-prod:
     needs: deploy-staging
