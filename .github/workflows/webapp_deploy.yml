@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: WebApp Deployment Pipeline
 
 on:
   push:
@@ -10,15 +10,15 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build-and-test.yml
+    uses: ./workflow_templates/build-and-test.yml
 
   sonarqube-scan:
     needs: build
-    uses: ./.github/workflows/sonarqube-scan.yml
+    uses: ./workflow_templates/sonarqube-scan.yml
 
   deploy-dev:
     needs: sonarqube-scan
-    uses: ./.github/workflows/deploy.yml
+    uses: ./workflow_templates/deploy.yml
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'
@@ -34,7 +34,7 @@ jobs:
 
   deploy-staging:
     needs: approve-staging
-    uses: ./.github/workflows/deploy.yml
+    uses: ./workflow_templates/deploy.yml
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'
@@ -50,7 +50,7 @@ jobs:
 
   deploy-prod:
     needs: approve-prod
-    uses: ./.github/workflows/deploy.yml
+    uses: ./workflow_templates/deploy.yml
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'

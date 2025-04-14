@@ -1,4 +1,4 @@
-name: Infra Deploy
+name: Infra Deployment Pipeline
 
 on:
   workflow_dispatch:
