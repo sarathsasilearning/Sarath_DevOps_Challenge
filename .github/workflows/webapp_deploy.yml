@@ -20,7 +20,6 @@ jobs:
   sonarqube-scan:
     needs: build
     uses: ./.github/workflows/sonar_scan.yml
-    secrets: inherit
     
   deploy-dev:
     needs: sonarqube-scan
