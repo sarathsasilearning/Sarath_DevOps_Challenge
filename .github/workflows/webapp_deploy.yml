@@ -61,4 +61,4 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     with:
       environment: 'Dev'
-      app-name: '1-webapp-dev-fmc'
+      app-name: '1-webapp-prod-fmc'
