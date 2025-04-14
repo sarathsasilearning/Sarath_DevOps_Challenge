@@ -75,6 +75,9 @@ jobs:
         with:
           terraform_version: 1.11.3
 
+      - name: Terraform Init
+        run: terraform init
+
 
       - name: Set up Go
         uses: actions/setup-go@v5
