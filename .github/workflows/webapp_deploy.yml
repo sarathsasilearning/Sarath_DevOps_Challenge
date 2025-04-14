@@ -16,7 +16,13 @@ jobs:
   build:
     uses: ./.github/workflows/build_and_test.yml
 
-  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: echo "test ${{ secrets.SONAR_TOKEN }}"
+    environment:
+      name: 'Dev'
   
   sonarqube-scan:
     needs: build
