@@ -31,7 +31,16 @@ jobs:
             -Dsonar.projectKey=sarathsasilearning_Sarath_DevOps_Challenge
             -Dsonar.sources=.
         
-   
+      # Check the Quality Gate status.
+      - name: SonarQube Quality Gate check
+        id: sonarqube-quality-gate-check
+        uses: sonarsource/sonarqube-quality-gate-action
+        with:
+          pollingTimeoutSec: 600
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: 'https://sonarcloud.io'
+
     #   - name: Set up JDK 17
     #     uses: actions/setup-java@v3
     #     with:
