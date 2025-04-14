@@ -1,4 +1,4 @@
-name: Build and deploy Node.js app to Azure Web App - webapp-dev-fmc
+name: Build and Deploy
 
 on:
   push:
@@ -10,127 +10,47 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    environment:
-      name: 'Dev'
-    permissions:
-      contents: read # This is required for actions/checkout
+    uses: ./.github/workflows/build-and-test.yml
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.1.0
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: 'https://sonarcloud.io'
-        with:
-          args: >
-            -Dsonar.organization=sarathsasilearning
-            -Dsonar.projectKey=sarathsasilearning_Sarath_DevOps_Challenge
-            -Dsonar.sources=.
-        
-      # Check the Quality Gate status.
-      - name: SonarQube Quality Gate check
-        id: sonarqube-quality-gate-check
-        uses: sonarsource/sonarqube-quality-gate-action@master
-        with:
-          pollingTimeoutSec: 600
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: 'https://sonarcloud.io'
-
-    #   - name: Set up JDK 17
-    #     uses: actions/setup-java@v3
-    #     with:
-    #       java-version: '17'
-    #       distribution: 'temurin'
-
-    #   - name: Install SonarScanner
-    #     run: |
-    #       curl -sSLo sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-4.8.0.2856-linux.zip
-    #       unzip sonar-scanner.zip -d /opt/sonar-scanner
-    #       sudo ln -s /opt/sonar-scanner/sonar-scanner-4.8.0.2856-linux/bin/sonar-scanner /usr/local/bin/sonar-scanner
-
-    #   - name: Run SonarCloud analysis
-    #     run: sonar-scanner
-    #     env:
-    #       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-    #       SONAR_HOST_URL: 'https://sonarcloud.io'
-    #       SONAR_PROJECT_KEY: 'sarathsasilearning_Sarath_DevOps_Challenge'
-    #       SONAR_ORGANIZATION: 'srathsasilearning'
-    #       SONAR_QUALITYGATE_WAIT: 'true'
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22.x'
-      
-      - name: npm install, build, and test
-        run: |
-          cd my-static-website
-          pwd
-          npm install
-          npm run build
-          npm run test
-          echo "Test results generated."
-
-      - name: Zip artifact for deployment
-        run: zip -r release.zip my-static-website/*
-      
-      - name: Upload test results
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: ./test-results/
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v4
-        with:
-          name: node-app
-          path: release.zip
-
-  deploy:
-    runs-on: ubuntu-latest
+  sonarqube-scan:
     needs: build
+    uses: ./.github/workflows/sonarqube-scan.yml
+
+  deploy-dev:
+    needs: sonarqube-scan
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: 'Dev'
+      app-name: '1-webapp-dev-fmc'
+
+  approve-staging:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
     environment:
-      name: 'Dev'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    permissions:
-      contents: read # This is required for actions/checkout
-      id-token: write # This is required for Azure login
-
+      name: 'Approval'
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v4
-        with:
-          name: node-app
+      - name: Staging Approval Step
+        run: echo "Staging deployment approved, proceeding to apply."
 
-      - name: Unzip artifact for deployment
-        run: unzip release.zip -d ./
-      - name: Move contents to wwwroot
-        run: |
-          ls -ltr my-static-website
-          mv my-static-website/ wwwroot
-          rm -rf my-static-website/
-          ls -ltr wwwroot
-        #rm -rf my-static-website
-        #   mkdir -p wwwroot
-        #   rm -rf wwwroot
-        #   mv my-static-website wwwroot
+  deploy-staging:
+    needs: approve-staging
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: 'Dev'
+      app-name: '1-webapp-dev-fmc'
 
-      
-      - name: Login to Azure
-        uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  approve-prod:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment:
+      name: 'Approval'
+    steps:
+      - name: Prod Approval Step
+        run: echo "Production deployment approved, proceeding to apply."
 
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: '1-webapp-prod-fmc' # Update to your Dev environment app name
-          package: wwwroot
+  deploy-prod:
+    needs: approve-prod
+    uses: ./.github/workflows/deploy.yml
+    with:
+      environment: 'Dev'
+      app-name: '1-webapp-dev-fmc'
