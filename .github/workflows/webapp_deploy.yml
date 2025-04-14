@@ -11,7 +11,7 @@ on:
 permissions:
    id-token: write
    contents: read
-   
+
 jobs:
   build:
     uses: ./.github/workflows/build_and_test.yml
@@ -19,7 +19,7 @@ jobs:
   sonarqube-scan:
     needs: build
     uses: ./.github/workflows/sonar_scan.yml
-
+    secrets: inherit
   deploy-dev:
     needs: sonarqube-scan
     uses: ./.github/workflows/deploy.yml
