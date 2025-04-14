@@ -60,3 +60,24 @@ jobs:
 
       - name: Terraform Apply
         run: terraform apply -var-file="terraform.tfvars" -auto-approve
+  
+  terratest:
+    needs: terraform-apply
+    runs-on: ubuntu-latest
+    environment: Dev
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Run Terratest
+        working-directory: ./tests
+        run: |
+          go mod init example.com/test || true
+          go mod tidy
+          go test -v -timeout 20m
