@@ -32,7 +32,7 @@ jobs:
 
       - name: Move contents to wwwroot
         run: |
-          ls -ltr my-static-website
+          ls -ltr
           mv my-static-website/ wwwroot
           rm -rf my-static-website/
           ls -ltr wwwroot
