@@ -31,7 +31,7 @@ jobs:
           echo "Test results generated."
 
       - name: Zip artifact for deployment
-        run: zip -r release.zip my-static-website/* -x "node_modules/*" "tests/*" ".git/*" ".github/*"
+        run: zip -r ../release.zip . -x "**/node_modules/**" "**/tests/**" "**/.git/**" "**/.github/**"
 
       - name: Upload test results
         uses: actions/upload-artifact@v4
