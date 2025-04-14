@@ -10,15 +10,15 @@ on:
 
 jobs:
   build:
-    uses: workflow_templates/build-and-test.yml
+    uses: ./workflow_templates/build-and-test.yml  # Corrected to use a relative path
 
   sonarqube-scan:
     needs: build
-    uses: workflow_templates/sonarqube-scan.yml
+    uses: ./workflow_templates/sonarqube-scan.yml  # Corrected to use a relative path
 
   deploy-dev:
     needs: sonarqube-scan
-    uses: workflow_templates/deploy.yml
+    uses: ./workflow_templates/deploy.yml  # Corrected to use a relative path
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'
@@ -34,7 +34,7 @@ jobs:
 
   deploy-staging:
     needs: approve-staging
-    uses: workflow_templates/deploy.yml
+    uses: ./workflow_templates/deploy.yml  # Corrected to use a relative path
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'
@@ -50,7 +50,7 @@ jobs:
 
   deploy-prod:
     needs: approve-prod
-    uses: workflow_templates/deploy.yml
+    uses: ./workflow_templates/deploy.yml  # Corrected to use a relative path
     with:
       environment: 'Dev'
       app-name: '1-webapp-dev-fmc'
