@@ -26,6 +26,8 @@ jobs:
           npm install
           npm run build
           npm run test
+          ls -ltr
+          ls -ltr tests
           echo "Test results generated."
 
       - name: Zip artifact for deployment
