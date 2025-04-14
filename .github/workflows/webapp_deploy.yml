@@ -7,7 +7,6 @@ on:
     paths:
       - 'static-website/**'  # Trigger only when files in static-website directory change
   workflow_dispatch:
-
 permissions:
    id-token: write
    contents: read
