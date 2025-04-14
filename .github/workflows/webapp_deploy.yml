@@ -21,6 +21,8 @@ jobs:
     uses: ./.github/workflows/sonar_scan.yml
     secrets: 
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    with:
+      env: 'Dev'
     
   deploy-dev:
     needs: sonarqube-scan
