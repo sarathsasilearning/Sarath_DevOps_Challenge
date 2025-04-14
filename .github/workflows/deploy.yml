@@ -32,12 +32,10 @@ jobs:
 
       - name: Move contents to wwwroot
         run: |
-          ls -ltr
           cd ..
-          ls -ltr
-          # mkdir wwwroot
-          # mv ./* wwwroot
-          # ls -ltr wwwroot
+          mkdir wwwroot
+          mv Sarath_DevOps_Challenge/* wwwroot
+          ls -ltr wwwroot
 
       - name: Login to Azure
         uses: azure/login@v2
