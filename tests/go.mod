@@ -1,4 +1,4 @@
-module fmc_challenge
+module practice-challenge/infra
 
 go 1.24.2
 
