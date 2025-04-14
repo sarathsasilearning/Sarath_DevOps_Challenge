@@ -10,11 +10,11 @@ on:
 
 jobs:
   build:
-    uses: ./workflow_templates/build-and-test.yml  # Corrected to use a relative path
+    uses: ./workflow_templates/build-and-test.yml@main  # Corrected to use a relative path
 
   sonarqube-scan:
     needs: build
-    uses: ./workflow_templates/sonarqube-scan.yml  # Corrected to use a relative path
+    uses: ./workflow_templates/sonarqube-scan.yml@main  # Corrected to use a relative path
 
   deploy-dev:
     needs: sonarqube-scan
