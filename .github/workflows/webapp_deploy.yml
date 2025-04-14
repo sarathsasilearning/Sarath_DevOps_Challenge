@@ -10,11 +10,11 @@ on:
 
 jobs:
   build:
-    uses: ./.github/workflows/build-and-test.yml
+    uses: ./.github/workflows/build_and_test.yml
 
   sonarqube-scan:
     needs: build
-    uses: ./.github/workflows/sonarqube-scan.yml
+    uses: ./.github/workflows/sonar_scan.yml
 
   deploy-dev:
     needs: sonarqube-scan
