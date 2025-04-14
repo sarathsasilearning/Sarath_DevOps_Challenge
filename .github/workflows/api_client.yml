@@ -1,4 +1,4 @@
-name: Fetch GitHub Issues
+name: API Client - Fetch GitHub Issues
 
 on:
   workflow_dispatch:
