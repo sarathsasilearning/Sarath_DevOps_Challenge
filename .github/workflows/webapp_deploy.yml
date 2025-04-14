@@ -15,11 +15,13 @@ jobs:
 
   build:
     uses: ./.github/workflows/build_and_test.yml
+
+  
   
   sonarqube-scan:
     needs: build
     uses: ./.github/workflows/sonar_scan.yml
-
+    secrets: inherit
     
   deploy-dev:
     needs: sonarqube-scan
