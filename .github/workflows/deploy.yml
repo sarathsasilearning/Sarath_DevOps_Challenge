@@ -33,8 +33,6 @@ jobs:
       - name: Move contents to wwwroot
         run: |
           mkdir wwwroot
-          #mv Sarath_DevOps_Challenge/* publish
-          mkdir wwwroot
           mv ./!(wwwroot) wwwroot
        
       - name: Login to Azure
