@@ -14,6 +14,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: remove_unwanted
+        run: |
+          find . -mindepth 1 ! -name 'my-static-website' ! -name '.' -exec rm -rf {} +
 
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v5.1.0
