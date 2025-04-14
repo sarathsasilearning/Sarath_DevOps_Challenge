@@ -33,7 +33,7 @@ jobs:
       - name: Move contents to wwwroot
         run: |
           mkdir wwwroot
-          mv ./!(wwwroot) wwwroot
+          find "./" -mindepth 1 -maxdepth 1 ! -name "wwwroot" -exec mv {} "./wwwroot" \;
        
       - name: Login to Azure
         uses: azure/login@v2
