@@ -37,6 +37,8 @@ jobs:
         run: |
           pwd
           ls -ltr
+          cd my-static-website
+          ls -ltr
           zip -r ../release.zip .
 
       - name: Upload test results
