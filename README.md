@@ -1,4 +1,4 @@
-# Sarath DevOps Challenge - Infrastructure Documentation
+# Infrastructure & CI/CD Documentation
 
 This repository contains the Terraform configuration for deploying a production-ready Azure infrastructure. The infrastructure includes a Linux Web App, Application Insights, Log Analytics Workspace, Azure Front Door, Autoscaling, and monitoring configurations.
 
