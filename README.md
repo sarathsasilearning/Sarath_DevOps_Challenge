@@ -1,105 +1,45 @@
-# Infrastructure & CI/CD Documentation
+# Azure Web App Deployment & Management Repository
 
-This repository contains the Terraform configuration for deploying a production-ready Azure infrastructure. The infrastructure includes a Linux Web App, Application Insights, Log Analytics Workspace, Azure Front Door, Autoscaling, and monitoring configurations.
+This repository contains the complete setup for deploying and managing a scalable Azure Web App. It includes infrastructure provisioning using Terraform, application deployment pipelines, and an API client utility for GitHub integration. The repository is structured into three main categories: **Infrastructure**, **Application**, and **API Client**.
 
 ---
 
 ## Table of Contents
-1. [Overview](#overview)
-2. [Modules](#modules)
-3. [Variables](#variables)
-4. [Outputs](#outputs)
-5. [Deployment Instructions](#deployment-instructions)
-6. [Testing](#testing)
-7. [CI/CD Pipelines](#ci-cd-pipelines)
+1. [Infrastructure](#infrastructure)
+   - Modules
+   - Variables
+   - Outputs
+   - Deployment Instructions
+   - Infrastructure Provisioning Pipeline
+   - Terratest
+2. [Application](#application)
+   - Overview
+   - Application Code
+   - Application Deployment Pipelines
+3. [API Client](#api-client)
+   - Overview
+   - API Client Files
+   - API Client Workflow
 
 ---
 
-## Overview
+## Infrastructure
 
-The infrastructure is designed to deploy and manage a Linux Web App in Azure with the following features:
-- **Resource Group**: Centralized resource management.
-- **Log Analytics Workspace**: Centralized logging and monitoring.
-- **Application Insights**: Application performance monitoring.
-- **Linux Web App**: A secure and scalable web application.
-- **Azure Front Door**: Global load balancing and content delivery.
-- **Autoscaling**: Dynamic scaling based on CPU and memory usage.
-- **Monitoring and Alerts**: Real-time alerts for critical metrics.
+### Modules
 
----
+| Module                  | Path                          | Description                              | Outputs                                   |
+|-------------------------|-------------------------------|------------------------------------------|------------------------------------------|
+| **Resource Group**      | `./modules/resource_group`    | Creates an Azure Resource Group.         | `resource_group_name`, `location`        |
+| **Log Analytics Workspace** | `./modules/log_analytics_workspace` | Creates a Log Analytics Workspace.      | `workspace_id`                           |
+| **Application Insights** | `./modules/application_insights` | Creates an Application Insights resource. | `app_insights_id`, `app_insights_instrumentation_key`, `connection_string` |
+| **Service Plan**         | `./modules/service_plan`     | Creates an Azure App Service Plan.       | `id`                                     |
+| **Linux Web App**        | `./modules/linux_web_app`    | Deploys a Linux Web App.                 | `web_app_name`, `default_hostname`, `id` |
+| **Azure Front Door**     | `./modules/azure_front_door` | Configures Azure Front Door.             | `cdn_frontdoor_profile_id`, `cdn_frontdoor_endpoint_id`, `cdn_frontdoor_origin_group_id`, `cdn_frontdoor_origin_id`, `cdn_frontdoor_route_id`, `cdn_frontdoor_firewall_policy_id`, `cdn_frontdoor_security_policy_id` |
+| **Autoscale**            | `./modules/autoscale`        | Configures autoscaling for the Web App.  | `autoscale_id`                           |
+| **Monitor Action Group** | `./modules/monitor_action_group` | Creates an Action Group for alert notifications. | `action_group_id`                        |
+| **Metric Alerts**        | `./modules/monitor_metric_alerts` | Configures metric-based alerts.         | `metric_alert_id`                        |
 
-## Modules
-
-The infrastructure is modularized for reusability and scalability. Below are the modules used:
-
-### 1. **Resource Group**
-- **Path**: `./modules/resource_group`
-- **Description**: Creates an Azure Resource Group.
-- **Outputs**:
-  - `resource_group_name`: Name of the resource group.
-  - `location`: Location of the resource group.
-
-### 2. **Log Analytics Workspace**
-- **Path**: `./modules/log_analytics_workspace`
-- **Description**: Creates a Log Analytics Workspace for centralized logging.
-- **Outputs**:
-  - `workspace_id`: ID of the Log Analytics Workspace.
-
-### 3. **Application Insights**
-- **Path**: `./modules/application_insights`
-- **Description**: Creates an Application Insights resource for monitoring.
-- **Outputs**:
-  - `app_insights_id`: ID of the Application Insights resource.
-  - `app_insights_instrumentation_key`: Instrumentation key for Application Insights.
-  - `connection_string`: Connection string for Application Insights.
-
-### 4. **Service Plan**
-- **Path**: `./modules/service_plan`
-- **Description**: Creates an Azure App Service Plan.
-- **Outputs**:
-  - `id`: ID of the Service Plan.
-
-### 5. **Linux Web App**
-- **Path**: `./modules/linux_web_app`
-- **Description**: Deploys a Linux Web App with secure configurations.
-- **Outputs**:
-  - `web_app_name`: Name of the Web App.
-  - `default_hostname`: Default hostname of the Web App.
-  - `id`: ID of the Web App.
-
-### 6. **Azure Front Door**
-- **Path**: `./modules/azure_front_door`
-- **Description**: Configures Azure Front Door for global load balancing.
-- **Outputs**:
-  - `cdn_frontdoor_profile_id`: ID of the Front Door profile.
-  - `cdn_frontdoor_endpoint_id`: ID of the Front Door endpoint.
-  - `cdn_frontdoor_origin_group_id`: ID of the Front Door origin group.
-  - `cdn_frontdoor_origin_id`: ID of the Front Door origin.
-  - `cdn_frontdoor_route_id`: ID of the Front Door route.
-  - `cdn_frontdoor_firewall_policy_id`: ID of the Front Door firewall policy.
-  - `cdn_frontdoor_security_policy_id`: ID of the Front Door security policy.
-
-### 7. **Autoscale**
-- **Path**: `./modules/autoscale`
-- **Description**: Configures autoscaling for the Web App based on CPU and memory usage.
-- **Outputs**:
-  - `autoscale_id`: ID of the autoscale setting.
-
-### 8. **Monitor Action Group**
-- **Path**: `./modules/monitor_action_group`
-- **Description**: Creates an Action Group for alert notifications.
-- **Outputs**:
-  - `action_group_id`: ID of the Action Group.
-
-### 9. **Metric Alerts**
-- **Path**: `./modules/monitor_metric_alerts`
-- **Description**: Configures metric-based alerts for monitoring.
-
----
-
-## Variables
-
-The infrastructure uses the following variables defined in `variables.tf`:
+### Variables
 
 | Variable Name              | Description                                      | Type   | Default Value |
 |----------------------------|--------------------------------------------------|--------|---------------|
@@ -115,11 +55,7 @@ The infrastructure uses the following variables defined in `variables.tf`:
 
 For a complete list of variables, refer to the `variables.tf` file.
 
----
-
-## Outputs
-
-The following outputs are available at the root level:
+### Outputs
 
 | Output Name                | Description                                      |
 |----------------------------|--------------------------------------------------|
@@ -132,18 +68,15 @@ The following outputs are available at the root level:
 
 For a complete list of outputs, refer to the `outputs.tf` file.
 
----
-
-## Deployment Instructions
-
-### Prerequisites
+### Deployment Instructions
+#### Prerequisites
 1. Install [Terraform](https://www.terraform.io/downloads.html).
 2. Configure Azure CLI and authenticate:
    ```bash
    az login
    ```
 
-### Steps
+#### Steps
 1. Initialize Terraform:
    ```bash
    terraform init
@@ -157,9 +90,12 @@ For a complete list of outputs, refer to the `outputs.tf` file.
    terraform apply -var-file="terraform.tfvars" -auto-approve
    ```
 
----
-
-## Testing
+### Infrastructure Provisioning Pipeline
+The infrastructure provisioning is automated using the `infra_deploy.yml` GitHub Actions workflow. It performs the following steps:
+1. **Terraform Init**: Initializes the Terraform backend.
+2. **Terraform Plan**: Generates an execution plan.
+3. **Approval Gate**: Requires manual approval for production deployments.
+4. **Terraform Apply**: Applies the Terraform configuration to provision resources.
 
 ### Terratest
 The infrastructure includes automated tests using Terratest. To run the tests:
@@ -172,44 +108,59 @@ The infrastructure includes automated tests using Terratest. To run the tests:
    go test -v -timeout 30m
    ```
 
-### SonarQube
-The repository includes a SonarQube scan workflow to ensure code quality. Trigger the workflow manually or on a push to the `main` branch.
+---
+
+## Application
+
+### Overview
+The application is a static website hosted on Azure Linux Web App. It includes the following components:
+- **Static Website Code**: HTML, JavaScript, and Node.js server files.
+- **Unit Tests**: Jest tests for validating the static website.
+- **Application Deployment Pipelines**: GitHub Actions workflows for building, testing, and deploying the application.
+
+### Application Code
+- **`my-static-website/index.html`**: The main HTML file for the static website.
+- **`my-static-website/server.js`**: A Node.js server for serving the static website.
+- **`my-static-website/package.json`**: Defines dependencies and scripts for the Node.js application.
+- **`my-static-website/tests/index.test.js`**: Contains Jest tests for validating the static website.
+
+### Application Deployment Pipelines
+The following GitHub Actions workflows are used for application deployment:
+1. **`build_and_test.yml`**:
+   - Builds the static website.
+   - Runs unit tests using Jest.
+   - Packages the application for deployment.
+2. **`webapp_deploy.yml`**:
+   - Deploys the static website to the Linux Web App.
+   - Includes approval gates for staging and production environments.
+3. **`sonar_scan.yml`**:
+   - Performs code quality checks using SonarQube.
 
 ---
 
-## CI/CD Pipelines
+## API Client
 
-The repository includes the following GitHub Actions workflows:
+### Overview
+The API client is a Python-based utility for fetching GitHub issues from a specified repository. It supports pagination and handles rate-limiting.
 
-1. **Build and Test**:
-   - Path: `.github/workflows/build_and_test.yml`
-   - Runs Node.js tests and builds the static website.
+### API Client Files
+- **`api_client/api_client.py`**: A Python script that uses the GitHub API to fetch issues.
+- **`api_client/github_issues.json`**: Stores the fetched GitHub issues in JSON format.
 
-2. **Infrastructure Deployment**:
-   - Path: `.github/workflows/infra_deploy.yml`
-   - Deploys the infrastructure using Terraform.
-
-3. **SonarQube Scan**:
-   - Path: `.github/workflows/sonar_scan.yml`
-   - Scans the codebase for quality and security issues.
-
-4. **WebApp Deployment**:
-   - Path: `.github/workflows/webapp_deploy.yml`
-   - Deploys the static website to the Linux Web App.
-
-5. **API Client**:
-   - Path: `.github/workflows/api_client.yml`
-   - Fetches GitHub issues using a Python script.
+### API Client Workflow
+The `api_client.yml` GitHub Actions workflow automates the execution of the API client. It performs the following steps:
+1. Sets up Python and installs dependencies.
+2. Executes the `api_client.py` script to fetch GitHub issues.
+3. Uploads the fetched issues as an artifact.
 
 ---
 
 ## Notes
-
-- Ensure sensitive information like Azure credentials is stored securely in GitHub Secrets.
+- Ensure sensitive information like Azure credentials is securely stored in **GitHub Secrets**.
 - Use the `terraform.tfvars` file to customize the deployment for different environments.
 - For any issues, refer to the logs generated by the GitHub Actions workflows.
 
---- 
+---
 
 ## License
 
