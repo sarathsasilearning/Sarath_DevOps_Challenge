@@ -38,7 +38,6 @@ jobs:
           # ls -ltr
           cd my-static-website
           # ls -ltr
-          rm -rf node_modules
           zip -r ../release.zip .
 
       - name: Upload test results
